@@ -45,12 +45,12 @@ public class DoctorController {
     }
 
     @
-    GetMapping("/active")
+    GetMapping("/get-active")
     public Flux<Doctor> getActiveDoctors(){
         return doctorService.findByIsActive(Boolean.TRUE);
     }
 
-    @GetMapping("/inactive")
+    @GetMapping("/get-inactive")
     public Flux<Doctor> getInactiveDoctors(){
         return doctorService.findByIsActive(Boolean.FALSE);
     }

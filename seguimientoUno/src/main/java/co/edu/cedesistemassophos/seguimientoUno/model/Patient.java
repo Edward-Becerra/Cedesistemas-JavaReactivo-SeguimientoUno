@@ -17,5 +17,5 @@ public class Patient extends Person implements PatientTasks{
     private boolean isAllergic;
     private Integer room;
     private boolean isIntern;
-    private Person person;
+    private Integer personId;
 }
