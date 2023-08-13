@@ -8,4 +8,5 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface PersonRepository extends R2dbcRepository<Person, Integer> {
 
+    public Mono<Person> findByDocumentNumber(Integer documentNumber);
 }

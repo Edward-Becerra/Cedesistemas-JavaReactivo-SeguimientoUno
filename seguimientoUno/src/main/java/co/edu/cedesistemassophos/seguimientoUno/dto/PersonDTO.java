@@ -1,13 +1,19 @@
-package co.edu.cedesistemassophos.seguimientoUno.model;
+package co.edu.cedesistemassophos.seguimientoUno.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Person {
+public class PersonDTO {
+    @Id
     protected Integer personId;
     protected String documentType;
     protected Integer documentNumber;
@@ -19,3 +25,4 @@ public class Person {
     protected LocalDateTime createdAt;
     protected LocalDateTime updatedAt;
 }
+

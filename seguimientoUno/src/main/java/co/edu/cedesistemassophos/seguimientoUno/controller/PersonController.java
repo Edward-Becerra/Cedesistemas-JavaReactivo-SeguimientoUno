@@ -8,7 +8,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("api/person")
 public class PersonController {
     PersonService personService;
 

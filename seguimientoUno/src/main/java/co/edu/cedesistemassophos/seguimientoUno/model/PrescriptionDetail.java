@@ -2,17 +2,18 @@ package co.edu.cedesistemassophos.seguimientoUno.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Doctor extends Person{
+public class PrescriptionDetail {
     @Id
-    private Integer doctorId;
-    private Boolean isActive;
-    private Integer specialityId;
+    private Integer prescriptionDetailId;
+    private Integer prescriptionId;
+    private Integer dietId;
+    private String schedule;
+    private Integer quantity;
+    private String observations;
 }

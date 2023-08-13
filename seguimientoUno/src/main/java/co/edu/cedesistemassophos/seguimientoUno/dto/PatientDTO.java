@@ -1,17 +1,16 @@
-package co.edu.cedesistemassophos.seguimientoUno.model;
+package co.edu.cedesistemassophos.seguimientoUno.dto;
 
+import co.edu.cedesistemassophos.seguimientoUno.model.Diet;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class Patient extends Person{
+public class PatientDTO extends PersonDTO {
     private String diagnosis;
     private String diagnosisDescription;
     private boolean isAllergic;
