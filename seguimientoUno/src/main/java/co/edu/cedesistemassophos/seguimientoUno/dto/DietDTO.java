@@ -1,7 +1,5 @@
 package co.edu.cedesistemassophos.seguimientoUno.dto;
 
-import co.edu.cedesistemassophos.seguimientoUno.model.Doctor;
-import co.edu.cedesistemassophos.seguimientoUno.model.Patient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

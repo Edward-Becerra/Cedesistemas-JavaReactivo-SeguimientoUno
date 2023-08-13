@@ -7,5 +7,5 @@ import reactor.core.publisher.Flux;
 
 @Repository
 public interface SpecialityRepository extends R2dbcRepository<Speciality, Integer> {
-    public Flux<Speciality> findBySpecialityName(String specialityName);
+    Flux<Speciality> findBySpecialityName(String specialityName);
 }

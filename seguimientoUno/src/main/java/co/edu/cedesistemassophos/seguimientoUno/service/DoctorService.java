@@ -2,11 +2,8 @@ package co.edu.cedesistemassophos.seguimientoUno.service;
 
 import co.edu.cedesistemassophos.seguimientoUno.dto.DoctorDTO;
 import co.edu.cedesistemassophos.seguimientoUno.model.Doctor;
-import co.edu.cedesistemassophos.seguimientoUno.model.Person;
-import co.edu.cedesistemassophos.seguimientoUno.model.Speciality;
 import co.edu.cedesistemassophos.seguimientoUno.repository.DoctorRepository;
-import co.edu.cedesistemassophos.seguimientoUno.repository.PersonRepository;
-import co.edu.cedesistemassophos.seguimientoUno.repository.SpecialityRepository;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;

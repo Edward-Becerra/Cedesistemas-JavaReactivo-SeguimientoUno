@@ -1,6 +1,5 @@
 package co.edu.cedesistemassophos.seguimientoUno.controller;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import co.edu.cedesistemassophos.seguimientoUno.dto.DoctorDTO;
 import co.edu.cedesistemassophos.seguimientoUno.model.Doctor;
 import co.edu.cedesistemassophos.seguimientoUno.service.DoctorService;
