@@ -11,7 +11,6 @@ import org.springframework.data.annotation.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Doctor extends Person{
-    @Id
     private Integer doctorId;
     private Boolean isActive;
     private Integer specialityId;

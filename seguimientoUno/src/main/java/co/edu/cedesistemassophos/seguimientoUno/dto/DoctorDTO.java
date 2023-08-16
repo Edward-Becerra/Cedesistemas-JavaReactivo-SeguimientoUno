@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,11 +18,11 @@ public class DoctorDTO{
     private Integer documentNumber;
     private String firstName;
     private String lastName;
-    private String birthDate;
+    private LocalDateTime birthDate;
     private Integer age;
     private String rol;
-    private String createdAt;
-    private String updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private Boolean isActive;
     private String specialityName;
 
@@ -30,11 +32,11 @@ public class DoctorDTO{
         this.documentNumber = person.getDocumentNumber();
         this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
-        this.birthDate = person.getBirthDate().toString();
+        this.birthDate = LocalDateTime.parse(person.getBirthDate().toString());
         this.age = person.getAge();
         this.rol = person.getRol();
-        this.createdAt = person.getCreatedAt().toString();
-        this.updatedAt = person.getUpdatedAt().toString();
+        this.createdAt = LocalDateTime.parse(person.getCreatedAt().toString());
+        this.updatedAt = LocalDateTime.parse(person.getUpdatedAt().toString());
         this.isActive = doctor.getIsActive();
         this.specialityName = speciality.getSpecialityName();
     }

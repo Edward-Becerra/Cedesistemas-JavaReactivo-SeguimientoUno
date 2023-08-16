@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS person (
   first_name VARCHAR(100) NOT NULL,
   last_name VARCHAR(100) NOT NULL,
   birth_date TIMESTAMP,
-  person_rol VARCHAR(50),
+  rol VARCHAR(50),
   age INT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS prescription (
   patient_id INT,
   doctor_id INT,
   prescription_date DATE,
-  observations TEXT
+  observations VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS prescription_detail (
@@ -66,10 +66,10 @@ CREATE TABLE IF NOT EXISTS prescription_detail (
   diet_id INT,
   schedule VARCHAR(50),
   quantity INT,
-  observations TEXT
+  observations VARCHAR(255)
 );
 
-INSERT INTO person (document_type, document_number, first_name, last_name, birth_date, age, person_rol)
+INSERT INTO person (document_type, document_number, first_name, last_name, birth_date, age, rol)
   VALUES
   ('CC', 12345678, 'John', 'Doe', '1988-08-10', 35, 'doctor'),
   ('VISA', 98765432, 'Jane', 'Smith', '1995-08-10', 28, 'doctor'),

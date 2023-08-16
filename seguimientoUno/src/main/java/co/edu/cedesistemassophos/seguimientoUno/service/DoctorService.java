@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.logging.Logger;
 
 import reactor.core.publisher.Flux;
@@ -32,14 +33,31 @@ public class DoctorService {
                         "Any Doctor found").getMostSpecificCause()));
     }
 
-    public Mono<Doctor> getDoctorById(Integer id){
-        return doctorRepository.findById(id)
+    public Mono<DoctorDTO> getDoctorById(Integer id){
+        return doctorRepository.findDoctorWithDetailsById(id)
                 .onErrorResume(throwable -> {
                     return Mono.empty();
                 })
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Failed to get Doctor by Id: "+id).getMostSpecificCause()));
     }
+
+    public Mono<Void> updateDoctorById(Integer id, DoctorDTO doctorDTO){
+        return doctorRepository.updateDoctorDetails(id, doctorDTO.getIsActive())
+                        .then(doctorRepository.updatePersonDetails(id, doctorDTO.getFirstName(), doctorDTO.getLastName()));
+                /*.then(doctorRepository.findDoctorWithDetailsById(id))
+                .flatMap(existingDoctor -> {
+                    existingDoctor.setUpdatedAt(LocalDateTime.now());
+                    return doctorRepository.save(existingDoctor);
+                });*/
+    }
+
+    public Mono<Void> deleteDoctorById(Integer id){
+        return doctorRepository.deleteDoctorById(id)
+                .then(doctorRepository.deletePersonById(id));
+    }
+
+
     public Mono<Doctor> createDoctor(Doctor doctor){
         return doctorRepository.save(doctor)
                 .onErrorResume(throwable -> {
@@ -47,14 +65,5 @@ public class DoctorService {
                 })
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Doctor can not be created.").getMostSpecificCause()));
-    }
-
-    public Mono<Void> deleteDoctorById(Integer id){
-        return doctorRepository.deleteById(id)
-                .onErrorResume(throwable -> {
-                    return Mono.empty();
-                })
-                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Failed to delete Doctor with Id:"+id).getMostSpecificCause()));
     }
 }
