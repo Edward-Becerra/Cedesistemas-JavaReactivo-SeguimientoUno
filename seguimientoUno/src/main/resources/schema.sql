@@ -4,39 +4,30 @@ DROP TABLE IF EXISTS diet;
 DROP TABLE IF EXISTS patient;
 DROP TABLE IF EXISTS doctor;
 DROP TABLE IF EXISTS speciality;
-DROP TABLE IF EXISTS person;
-
-
-CREATE TABLE IF NOT EXISTS person (
-  person_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  document_type VARCHAR(50) NOT NULL,
-  document_number INT NOT NULL UNIQUE,
-  first_name VARCHAR(100) NOT NULL,
-  last_name VARCHAR(100) NOT NULL,
-  birth_date TIMESTAMP,
-  rol VARCHAR(50),
-  age INT NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+DROP TABLE IF EXISTS doctor_specialities;
 
 CREATE TABLE IF NOT EXISTS doctor (
   doctor_id SERIAL PRIMARY KEY,
+  doctor_name VARCHAR(100),
   is_active BOOLEAN NOT NULL,
-  speciality_id INT,
-  person_id INT NOT NULL UNIQUE
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS patient (
   patient_id SERIAL PRIMARY KEY,
+  document_type VARCHAR(50) NOT NULL,
+  document_number INT NOT NULL UNIQUE,
+  patient_name VARCHAR(100) NOT NULL,
+  birth_date TIMESTAMP,
   diagnosis VARCHAR(100) NOT NULL,
   diagnosis_description VARCHAR(255) NOT NULL,
   is_allergic BOOLEAN NOT NULL,
   room INT NOT NULL,
-  is_interned BOOLEAN NOT NULL,
   date_inning DATE NOT NULL,
   date_out DATE DEFAULT NULL,
-  person_id INT
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS speciality (
@@ -44,12 +35,15 @@ CREATE TABLE IF NOT EXISTS speciality (
   speciality_name VARCHAR(50) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS doctor_specialities (
+  speciality_id INT,
+  doctor_id INT
+);
+
 CREATE TABLE IF NOT EXISTS diet (
   diet_id SERIAL PRIMARY KEY,
   diet_type VARCHAR(100) NOT NULL,
-  diet_description VARCHAR(255) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  diet_description VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS prescription (
@@ -64,48 +58,57 @@ CREATE TABLE IF NOT EXISTS prescription_detail (
   prescription_detail_id SERIAL PRIMARY KEY,
   prescription_id INT,
   diet_id INT,
-  schedule VARCHAR(50),
+  meal_time VARCHAR(50),
   quantity INT,
   observations VARCHAR(255)
 );
 
-INSERT INTO person (document_type, document_number, first_name, last_name, birth_date, age, rol)
+INSERT INTO doctor (doctor_name, is_active)
   VALUES
-  ('CC', 12345678, 'John', 'Doe', '1988-08-10', 35, 'doctor'),
-  ('VISA', 98765432, 'Jane', 'Smith', '1995-08-10', 28, 'doctor'),
-  ('NIT', 87654321, 'Michael', 'Johnson', '1978-08-10', 45, 'patient'),
-  ('CC', 55555555, 'Emily', 'Brown', '1994-08-10', 29, 'patient'),
-  ('CE', 1111111, 'Ema', 'Brown', '1994-08-10', 29, 'doctor'),
-  ('CC', 123456789, 'John', 'Doe', '1988-08-10', 35, 'doctor'),
-  ('VISA', 987654321, 'Jane', 'Smith', '1995-08-10', 28, 'patient'),
-  ('NIT', 876543212, 'Michael', 'Johnson', '1978-08-10', 45, 'patient'),
-  ('CC', 555555556, 'Valery', 'Brown', '1994-08-10', 29, 'patient'),
-  ('CE', 555555557, 'Valentine', 'Brown', '1994-08-10', 29, 'doctor');
+  ('John Doe', true),
+  ('Jane Smith', true),
+  ('Ema Brown', true),
+  ('Jonas Dawson', true),
+  ('Valentine Brown', true);
 
-
-INSERT INTO doctor(speciality_id, is_active, person_id)
+INSERT INTO doctor_specialities (speciality_id, doctor_id)
   VALUES
-  (1, true, 1),
-  (2, true, 2),
-  (3, true, 5),
-  (4, true, 6),
-  (5, true, 10);
+  (2,1),
+  (3,1),
+  (4,1),
+  (1,2),
+  (2,2),
+  (3,2),
+  (2,3),
+  (5,3),
+  (4,3),
+  (1,4),
+  (3,4),
+  (4,4),
+  (1,5),
+  (1,5),
+  (5,5);
 
-INSERT INTO patient (diagnosis, diagnosis_description, is_allergic, room, is_interned, date_inning, person_id)
+INSERT INTO patient (document_type, document_number, patient_name, birth_date, diagnosis, diagnosis_description, is_allergic, room, date_inning)
   VALUES
-  ('Hypertension', 'High blood pressure', false, 101, true, '2023-08-10', 3),
-  ('Flu', 'Respiratory infection', false, 102, true, '2023-08-10', 4),
-  ('Diabetes', 'High glucose', true, 103, true, '2023-08-10', 7),
-  ('Broken leg', 'Broken leg bone', false, 105, false, '2023-08-10', 8),
-  ('Broken arm', 'Broken arm bone', false, 105, false, '2023-08-10', 9);
+  ('NIT', 87654321, 'Michael Johnson', '1978-08-10', 'Hypertension', 'High blood pressure', false, 101, '2023-08-10'),
+  ('CC', 55555555, 'Emily Brown', '1994-08-10', 'Flu', 'Respiratory infection', false, 102, '2023-08-10'),
+  ('VISA', 987654321, 'Jane Smith', '1995-08-10', 'Diabetes', 'High glucose', true, 103, '2023-08-10'),
+  ('NIT', 876543212, 'Michael Johnson', '1978-08-10', 'Broken leg', 'Broken leg bone', false, 105, '2023-08-10'),
+  ('CC', 555555556, 'Valery Brown', '1994-08-10', 'Broken arm', 'Broken arm bone', false, 105, '2023-08-10');
 
 INSERT INTO speciality (speciality_name)
   VALUES
   ('Cardiology'),
-  ('Pediatric'),
+  ('Neurology'),
+  ('Pediatrics'),
+  ('Gastroenterology'),
+  ('Dermatology'),
+  ('Ophthalmology'),
+  ('Orthopedics'),
   ('Oncology'),
-  ('Sociology'),
-  ('Urology');
+  ('Endocrinology'),
+  ('Psychiatry');
 
 INSERT INTO diet (diet_type, diet_description)
   VALUES
@@ -123,23 +126,11 @@ INSERT INTO prescription (patient_id, doctor_id, prescription_date, observations
   (8, 6, '2023-08-10', 'Gluten free diet'),
   (9, 1, '2023-08-10', 'Balanced diet for the heart');
 
-INSERT INTO prescription_detail (prescription_id, diet_id, schedule, quantity, observations)
+INSERT INTO prescription_detail (prescription_id, diet_id, meal_time, quantity, observations)
   VALUES
   (1, 1, 'breakfast', 1, 'No saturated fats'),
   (2, 2, 'breakfast', 1, 'High protein'),
   (3, 3, 'breakfast', 1, 'No sugar'),
   (4, 4, 'breakfast', 1, 'No bread'),
   (5, 5, 'breakfast', 1, 'No saturated fats, no sugar, no bread, high protein');
-
-SELECT * FROM person;
-SELECT * FROM doctor WHERE person_id = 2;
-SELECT * FROM patient;
-SELECT * FROM diet;
-SELECT * FROM prescription;
-SELECT * FROM prescription_detail;
-
-SELECT p.*, d.*, s.*
-   FROM person p
-   INNER JOIN doctor d ON p.person_id = d.person_id
-   INNER JOIN speciality s ON d.speciality_id = s.speciality_id;
 

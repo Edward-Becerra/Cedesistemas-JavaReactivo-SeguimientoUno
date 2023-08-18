@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 
 @Data
 @AllArgsConstructor
@@ -17,8 +18,10 @@ public class Person {
     protected String firstName;
     protected String lastName;
     protected LocalDate birthDate;
-    protected Integer age;
     protected String rol;
+    protected Integer age;
     protected LocalDateTime createdAt;
     protected LocalDateTime updatedAt;
+
+
 }

@@ -13,6 +13,4 @@ public class Diet{
     private Integer DietId;
     private String dietType;
     private String dietDescription;
-    private LocalDateTime dietCreatedAt;
-    private LocalDateTime dietUpdatedAt;
 }

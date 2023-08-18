@@ -13,7 +13,7 @@ public class PrescriptionDetail {
     private Integer prescriptionDetailId;
     private Integer prescriptionId;
     private Integer dietId;
-    private String schedule;
+    private String mealTime;
     private Integer quantity;
     private String observations;
 }

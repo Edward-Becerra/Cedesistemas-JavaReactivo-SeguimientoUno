@@ -30,16 +30,13 @@ public class DoctorController {
     @GetMapping("/{id}")
     public Mono<ResponseEntity<DoctorDTO>> getDoctorById(@PathVariable Integer id){
         return doctorService.getDoctorById(id)
-                .map(doctor -> {
-                    System.out.println("Doctor found: "+doctor);
-                    return ResponseEntity.ok(doctor);
-                })
+                .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public Mono<ResponseEntity<Map<String, String>>> updateDoctorById(@PathVariable Integer id, @RequestBody DoctorDTO doctorDTO){
-        return doctorService.updateDoctorById(id, doctorDTO)
+    public Mono<ResponseEntity<Map<String, String>>> updateDoctorById(@PathVariable Integer id, @RequestBody Doctor doctor){
+        return doctorService.updateDoctorById(id, doctor)
                 .thenReturn(ResponseEntity.ok().body(Collections.singletonMap("result", "Doctor Updated")))
                 .onErrorResume(throwable -> {
                   return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
@@ -56,7 +53,9 @@ public class DoctorController {
     }
 
     @PostMapping("/create-doctor")
-    public Mono<Doctor> createDoctor(@RequestBody Doctor doctor){
-        return doctorService.createDoctor(doctor);
+    public Mono<ResponseEntity<Map<String, String>>> createDoctor(@RequestBody Doctor doctor){
+        return doctorService.createDoctor(doctor)
+                .thenReturn(ResponseEntity.ok().body(Collections.singletonMap("Result", "Doctor created")))
+                .defaultIfEmpty(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 }
