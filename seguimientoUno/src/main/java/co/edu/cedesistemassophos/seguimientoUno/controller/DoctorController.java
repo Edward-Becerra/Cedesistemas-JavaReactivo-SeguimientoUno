@@ -52,7 +52,6 @@ public class DoctorController {
     public Mono<ResponseEntity<Map<String, String>>> createDoctor(@RequestBody DoctorDTO doctorDTO){
         return doctorService.createDoctor(doctorDTO)
                 .thenReturn(ResponseEntity.ok().body(Collections.singletonMap("Result", "Doctor created")))
-                .onErrorResume(throwable -> Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()))
                 .defaultIfEmpty(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 }

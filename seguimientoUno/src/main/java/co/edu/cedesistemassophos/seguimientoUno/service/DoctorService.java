@@ -43,7 +43,12 @@ public class DoctorService {
                                 .collectList()
                                 .map(specialities -> new DoctorDTO(doctor, specialities))
                         )
-                );
+                )
+                .onErrorResume(throwable -> {
+                    LOGGER.warning("Error fetching doctors");
+                    return Mono.empty();
+                })
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Doctor not found")));
     }
 
     public Mono<DoctorDTO> getDoctorById(Integer id){
@@ -69,9 +74,6 @@ public class DoctorService {
     public Mono<Void> updateDoctorById(Integer id, Doctor doctor){
         return doctorRepository.findById(id)
                         .flatMap(existingDoctor-> {
-                            /*if (existingDoctor == null){
-                                return Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Doctor not found"));
-                            }*/
                             existingDoctor.setDoctorName(doctor.getDoctorName());
                             existingDoctor.setIsActive(doctor.getIsActive());
                             existingDoctor.setUpdatedAt(LocalDate.now());
@@ -124,14 +126,4 @@ public class DoctorService {
                     return Mono.empty();
                 }).then();
     }
-
-    /*public Doctor convertToDoctor(DoctorDTO doctorDTO){
-        Doctor doctor = new Doctor();
-        doctor.setDoctorId(doctorDTO.getDoctorId());
-        doctor.setDoctorName(doctorDTO.getDoctorName());
-        doctor.setIsActive(doctorDTO.getIsActive());
-        doctor.setUpdatedAt(doctorDTO.getUpdatedAt());
-
-        return doctor;
-    }*/
 }

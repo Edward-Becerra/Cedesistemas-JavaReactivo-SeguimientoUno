@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS patient (
   room INT NOT NULL,
   date_inning DATE NOT NULL,
   date_out DATE DEFAULT NULL,
-  created_at TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP
 );
 
