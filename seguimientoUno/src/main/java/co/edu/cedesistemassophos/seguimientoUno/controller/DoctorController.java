@@ -54,4 +54,19 @@ public class DoctorController {
                 .thenReturn(ResponseEntity.ok().body(Collections.singletonMap("Result", "Doctor created")))
                 .defaultIfEmpty(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
+
+    @GetMapping("/active")
+    public Flux<DoctorDTO> getActiveDoctors(){
+        return doctorService.findActiveDoctors(Boolean.TRUE);
+    }
+
+    @GetMapping("/inactive")
+    public Flux<DoctorDTO> getInactiveDoctors(){
+        return doctorService.findActiveDoctors(Boolean.FALSE);
+    }
+
+    @PostMapping("/search-by-speciality")
+    public Flux<DoctorDTO> getDoctorsBySpeciality(@RequestBody DoctorDTO doctorDTO){
+        return doctorService.findDoctorBySpeciality(doctorDTO.getDoctorSpecialities());
+    }
 }

@@ -126,4 +126,38 @@ public class DoctorService {
                     return Mono.empty();
                 }).then();
     }
+
+    public Flux<DoctorDTO> findActiveDoctors(Boolean status){
+        return doctorRepository.findByIsActive(status)
+                .flatMap(doctor -> doctorSpecialitiesRepository.findByDoctorId(doctor.getDoctorId())
+                .map(DoctorSpecialities::getSpecialityId)
+                .collectList()
+                .flatMapMany(specialityIds -> Flux.fromIterable(specialityIds)
+                        .flatMap(specialityRepository::findById)
+                        .collectList()
+                        .map(specialities -> new DoctorDTO(doctor, specialities))
+                )
+                .onErrorResume(throwable -> {
+                    LOGGER.warning("Error searching doctor status: "+ status);
+                    return Mono.empty();
+                })
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Doctors with status: "+status+" not found.").getMostSpecificCause())));
+    }
+
+    public Flux<DoctorDTO> findDoctorBySpeciality(List<String> doctorSpecialities){
+        return doctorRepository.findBySpecialities(doctorSpecialities)
+                .flatMap(doctor -> doctorSpecialitiesRepository.findByDoctorId(doctor.getDoctorId())
+                        .map(DoctorSpecialities::getSpecialityId)
+                        .collectList()
+                        .flatMapMany(specialityIds -> Flux.fromIterable(specialityIds)
+                                .flatMap(specialityRepository::findById)
+                                .collectList()
+                                .map(specialities -> new DoctorDTO(doctor, specialities))
+                        )
+                        .onErrorResume(throwable -> {
+                            LOGGER.warning("Error searching doctor by speciality: "+ doctorSpecialities);
+                            return Mono.empty();
+                        })
+                        .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Doctors with specialities: "+doctorSpecialities+" not found.").getMostSpecificCause())));
+    }
 }
